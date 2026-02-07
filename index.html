@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+max-height: 80vh;
+overflow-y: auto;
+}
+</style>
+</head>
+<body>
+
+
+<h2>Data Kamar 1</h2>
+
+
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Foto</th>
+<th>Nama Lengkap</th>
+<th>Nomor Registrasi</th>
+<th>Tindak Pidana</th>
+<th>Tanggal Masuk</th>
+<th>Tanggal Ekspirasi</th>
+</tr>
+</thead>
+<tbody id="data-body"></tbody>
+</table>
+</div>
+
+
+<script>
+google.script.run.withSuccessHandler(renderTable).getDataKamar();
+
+
+function renderTable(data) {
+const tbody = document.getElementById('data-body');
+tbody.innerHTML = '';
+
+
+data.forEach(item => {
+const tr = document.createElement('tr');
+
+
+tr.innerHTML = `
+<td>${item.foto ? `<img src="${item.foto}">` : '-'}</td>
+<td>${item.nama}</td>
+<td>${item.registrasi}</td>
+<td>${item.tindakPidana}</td>
+<td>${item.tanggalMasuk}</td>
+<td>${item.tanggalEkspirasi}</td>
+`;
+
+
+tbody.appendChild(tr);
+});
+}
+</script>
+
+
+</body>
+</html>
