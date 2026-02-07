@@ -1,89 +1,679 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<title>Data Kamar 1</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Kamar 1 - Lembaga Pemasyarakatan</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-<style>
-body {
-  font-family: Arial, sans-serif;
-  padding: 20px;
-}
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f7fa;
+            padding: 10px;
+        }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-th, td {
-  border: 1px solid #ccc;
-  padding: 8px;
-  text-align: center;
-}
+        header {
+            background: linear-gradient(to right, #2c3e50, #4a6491);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
 
-th {
-  background-color: #f2f2f2;
-  position: sticky;
-  top: 0;
-}
+        header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
 
-img {
-  width: 80px;
-  border-radius: 4px;
-}
+        header p {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
 
-.table-container {
-  max-height: 80vh;
-  overflow-y: auto;
-}
-</style>
+        .stats-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            flex: 1;
+            min-width: 150px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        .stat-card .stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .stat-card .stat-label {
+            font-size: 0.85rem;
+            color: #7f8c8d;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: space-between;
+        }
+
+        .search-box {
+            flex-grow: 1;
+            position: relative;
+            max-width: 400px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            background-color: white;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #7f8c8d;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .filter-buttons button {
+            padding: 10px 15px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .filter-buttons button:hover {
+            background: #f1f1f1;
+        }
+
+        .filter-buttons button.active {
+            background: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        thead {
+            background-color: #2c3e50;
+            color: white;
+        }
+
+        th {
+            padding: 15px 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #f1f1f1;
+            transition: background-color 0.2s;
+        }
+
+        tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        td {
+            padding: 12px;
+            vertical-align: middle;
+        }
+
+        .photo-cell {
+            width: 100px;
+        }
+
+        .inmate-photo {
+            width: 70px;
+            height: 70px;
+            border-radius: 4px;
+            object-fit: cover;
+            border: 2px solid #e1e8ed;
+            background-color: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #7f8c8d;
+            font-size: 1.8rem;
+        }
+
+        .inmate-photo img {
+            width: 100%;
+            height: 100%;
+            border-radius: 4px;
+            object-fit: cover;
+        }
+
+        .no-photo {
+            background-color: #ecf0f1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .inmate-name {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .inmate-reg {
+            font-family: monospace;
+            background-color: #f8f9fa;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .status-active {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status-expired {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+
+        .date-cell {
+            white-space: nowrap;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #7f8c8d;
+        }
+
+        .loading-spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            text-align: center;
+            padding: 40px;
+            color: #c62828;
+            background-color: #ffebee;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #7f8c8d;
+            font-size: 0.85rem;
+            margin-top: 20px;
+        }
+
+        .row-count {
+            padding: 10px 15px;
+            background-color: #f8f9fa;
+            border-top: 1px solid #eee;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .stat-card {
+                min-width: 120px;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            .search-box {
+                max-width: 100%;
+            }
+            
+            th, td {
+                padding: 10px 8px;
+            }
+            
+            .photo-cell {
+                width: 70px;
+            }
+            
+            .inmate-photo {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .filter-buttons {
+                justify-content: flex-start;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-container {
+                flex-direction: column;
+            }
+            
+            .stat-card {
+                width: 100%;
+            }
+            
+            .filter-buttons {
+                flex-wrap: wrap;
+            }
+            
+            .filter-buttons button {
+                flex: 1;
+                min-width: calc(50% - 8px);
+            }
+        }
+    </style>
 </head>
-
 <body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-user-injured"></i> Data Penghuni Kamar 1</h1>
+            <p>Lembaga Pemasyarakatan - Sistem Manajemen Penghuni</p>
+        </header>
+        
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-value" id="total-inmates">0</div>
+                <div class="stat-label">Total Penghuni</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="with-photos">0</div>
+                <div class="stat-label">Dengan Foto</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="active-inmates">0</div>
+                <div class="stat-label">Aktif</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="expired-inmates">0</div>
+                <div class="stat-label">Telah Ekspirasi</div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="search-input" placeholder="Cari nama, nomor registrasi, atau tindak pidana...">
+            </div>
+            
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">Semua</button>
+                <button class="filter-btn" data-filter="active">Aktif</button>
+                <button class="filter-btn" data-filter="expired">Ekspirasi</button>
+                <button class="filter-btn" data-filter="with-photo">Dengan Foto</button>
+                <button class="filter-btn" data-filter="no-photo">Tanpa Foto</button>
+            </div>
+        </div>
+        
+        <div class="table-container">
+            <div class="loading" id="loading">
+                <div class="loading-spinner"></div>
+                <p>Memuat data penghuni...</p>
+            </div>
+            
+            <div class="error-message" id="error-message" style="display:none;">
+                <h3><i class="fas fa-exclamation-triangle"></i> Gagal Memuat Data</h3>
+                <p>Terjadi kesalahan saat mengambil data dari server. Silakan coba lagi.</p>
+                <button id="retry-btn" style="margin-top: 15px; padding: 10px 20px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                    <i class="fas fa-redo"></i> Coba Lagi
+                </button>
+            </div>
+            
+            <table id="data-table" style="display:none;">
+                <thead>
+                    <tr>
+                        <th class="photo-cell">Foto</th>
+                        <th>Nama Lengkap</th>
+                        <th>Nomor Registrasi</th>
+                        <th>Tindak Pidana</th>
+                        <th>Tanggal Masuk</th>
+                        <th>Tanggal Ekspirasi</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="data-body">
+                    <!-- Data akan diisi oleh JavaScript -->
+                </tbody>
+            </table>
+            
+            <div class="row-count" id="row-count" style="display:none;">
+                Menampilkan <span id="display-count">0</span> dari <span id="total-count">0</span> penghuni
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Sistem Manajemen Data Penghuni Kamar 1 &copy; <span id="current-year"></span> | Terakhir diperbarui: <span id="last-update"></span></p>
+        </div>
+    </div>
 
-<h2>Data Kamar 1</h2>
-
-<div class="table-container">
-<table>
-<thead>
-<tr>
-  <th>Foto</th>
-  <th>Nama Lengkap</th>
-  <th>Nomor Registrasi</th>
-  <th>Tindak Pidana</th>
-  <th>Tanggal Masuk</th>
-  <th>Tanggal Ekspirasi</th>
-</tr>
-</thead>
-<tbody id="data"></tbody>
-</table>
-</div>
-
-<script>
-const API_URL = "https://script.google.com/macros/s/AKfycbwvegqFowlxGEp4CeTT0Rr96QinlZ_vLDoN1Bm-5PCg699rgtPNWJkCSpjM-e9j-K5tFw/exec";
-
-fetch(API_URL)
-  .then(res => res.json())
-  .then(data => {
-    const tbody = document.getElementById("data");
-    data.forEach(d => {
-      tbody.innerHTML += `
-        <tr>
-          <td>${d.foto ? `<img src="${d.foto}">` : '-'}</td>
-          <td>${d.nama}</td>
-          <td>${d.registrasi}</td>
-          <td>${d.tindakPidana}</td>
-          <td>${d.tanggalMasuk}</td>
-          <td>${d.tanggalEkspirasi}</td>
-        </tr>
-      `;
-    });
-  })
-  .catch(err => {
-    alert("Gagal memuat data");
-    console.error(err);
-  });
-</script>
-
+    <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycbwvegqFowlxGEp4CeTT0Rr96QinlZ_vLDoN1Bm-5PCg699rgtPNWJkCSpjM-e9j-K5tFw/exec";
+        
+        // Set current year in footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+        
+        // Set initial last update time
+        document.getElementById('last-update').textContent = new Date().toLocaleString('id-ID');
+        
+        let allData = [];
+        let filteredData = [];
+        
+        // DOM elements
+        const loadingElement = document.getElementById('loading');
+        const errorElement = document.getElementById('error-message');
+        const tableElement = document.getElementById('data-table');
+        const dataBody = document.getElementById('data-body');
+        const rowCountElement = document.getElementById('row-count');
+        const displayCountElement = document.getElementById('display-count');
+        const totalCountElement = document.getElementById('total-count');
+        const searchInput = document.getElementById('search-input');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const retryButton = document.getElementById('retry-btn');
+        
+        // Stats elements
+        const totalInmatesElement = document.getElementById('total-inmates');
+        const withPhotosElement = document.getElementById('with-photos');
+        const activeInmatesElement = document.getElementById('active-inmates');
+        const expiredInmatesElement = document.getElementById('expired-inmates');
+        
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadData();
+            
+            // Add event listeners
+            searchInput.addEventListener('input', filterData);
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    filterData();
+                });
+            });
+            
+            retryButton.addEventListener('click', loadData);
+        });
+        
+        // Load data from API
+        async function loadData() {
+            showLoading();
+            hideError();
+            
+            try {
+                const response = await fetch(API_URL);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                allData = processData(data);
+                filteredData = [...allData];
+                
+                updateStats(allData);
+                renderTable(filteredData);
+                hideLoading();
+                showTable();
+            } catch (error) {
+                console.error('Error loading data:', error);
+                hideLoading();
+                showError();
+            }
+        }
+        
+        // Process data from API
+        function processData(data) {
+            return data.map(item => {
+                // Determine status based on expiration date
+                const today = new Date();
+                const expDate = new Date(item.tanggalEkspirasi);
+                const isExpired = expDate < today;
+                
+                // Format dates for display
+                const formattedMasuk = formatDate(item.tanggalMasuk);
+                const formattedEkspirasi = formatDate(item.tanggalEkspirasi);
+                
+                return {
+                    ...item,
+                    isExpired,
+                    formattedMasuk,
+                    formattedEkspirasi,
+                    hasPhoto: item.foto !== '',
+                    searchText: `${item.nama} ${item.registrasi} ${item.tindakPidana}`.toLowerCase()
+                };
+            });
+        }
+        
+        // Format date for display
+        function formatDate(dateString) {
+            if (!dateString) return '-';
+            
+            try {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('id-ID', {
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric'
+                });
+            } catch (e) {
+                return dateString;
+            }
+        }
+        
+        // Update statistics
+        function updateStats(data) {
+            totalInmatesElement.textContent = data.length;
+            
+            const withPhotos = data.filter(item => item.hasPhoto).length;
+            withPhotosElement.textContent = withPhotos;
+            
+            const activeInmates = data.filter(item => !item.isExpired).length;
+            activeInmatesElement.textContent = activeInmates;
+            
+            const expiredInmates = data.filter(item => item.isExpired).length;
+            expiredInmatesElement.textContent = expiredInmates;
+        }
+        
+        // Render table with data
+        function renderTable(data) {
+            dataBody.innerHTML = '';
+            
+            if (data.length === 0) {
+                dataBody.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 40px; color: #7f8c8d;">
+                            <i class="fas fa-search" style="font-size: 2rem; margin-bottom: 10px; display: block;"></i>
+                            <p>Tidak ada data yang sesuai dengan pencarian/filter</p>
+                        </td>
+                    </tr>
+                `;
+            } else {
+                data.forEach(item => {
+                    const row = document.createElement('tr');
+                    
+                    // Determine status badge
+                    let statusBadge = '';
+                    if (item.isExpired) {
+                        statusBadge = '<span class="status-badge status-expired">Ekspirasi</span>';
+                    } else {
+                        statusBadge = '<span class="status-badge status-active">Aktif</span>';
+                    }
+                    
+                    row.innerHTML = `
+                        <td class="photo-cell">
+                            <div class="inmate-photo ${!item.hasPhoto ? 'no-photo' : ''}">
+                                ${item.hasPhoto 
+                                    ? `<img src="${item.foto}" alt="Foto ${item.nama}" loading="lazy">` 
+                                    : `<i class="fas fa-user"></i>`
+                                }
+                            </div>
+                        </td>
+                        <td>
+                            <div class="inmate-name">${item.nama || '-'}</div>
+                        </td>
+                        <td>
+                            <div class="inmate-reg">${item.registrasi || '-'}</div>
+                        </td>
+                        <td>${item.tindakPidana || '-'}</td>
+                        <td class="date-cell">${item.formattedMasuk}</td>
+                        <td class="date-cell">${item.formattedEkspirasi}</td>
+                        <td>${statusBadge}</td>
+                    `;
+                    
+                    dataBody.appendChild(row);
+                });
+            }
+            
+            // Update row count
+            displayCountElement.textContent = data.length;
+            totalCountElement.textContent = allData.length;
+            
+            // Update last update time
+            document.getElementById('last-update').textContent = new Date().toLocaleString('id-ID');
+        }
+        
+        // Filter data based on search and active filter
+        function filterData() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
+            
+            filteredData = allData.filter(item => {
+                // Apply search filter
+                if (searchTerm && !item.searchText.includes(searchTerm)) {
+                    return false;
+                }
+                
+                // Apply button filter
+                switch (activeFilter) {
+                    case 'active':
+                        return !item.isExpired;
+                    case 'expired':
+                        return item.isExpired;
+                    case 'with-photo':
+                        return item.hasPhoto;
+                    case 'no-photo':
+                        return !item.hasPhoto;
+                    default:
+                        return true; // 'all' filter
+                }
+            });
+            
+            renderTable(filteredData);
+        }
+        
+        // UI helper functions
+        function showLoading() {
+            loadingElement.style.display = 'block';
+            tableElement.style.display = 'none';
+            rowCountElement.style.display = 'none';
+        }
+        
+        function hideLoading() {
+            loadingElement.style.display = 'none';
+        }
+        
+        function showTable() {
+            tableElement.style.display = 'table';
+            rowCountElement.style.display = 'block';
+        }
+        
+        function showError() {
+            errorElement.style.display = 'block';
+            tableElement.style.display = 'none';
+            rowCountElement.style.display = 'none';
+        }
+        
+        function hideError() {
+            errorElement.style.display = 'none';
+        }
+        
+        // Preload images for better UX
+        function preloadImages() {
+            allData.forEach(item => {
+                if (item.foto) {
+                    const img = new Image();
+                    img.src = item.foto;
+                }
+            });
+        }
+    </script>
 </body>
 </html>
