@@ -1,60 +1,89 @@
 <!DOCTYPE html>
-max-height: 80vh;
-overflow-y: auto;
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Data Kamar 1</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: center;
+}
+
+th {
+  background-color: #f2f2f2;
+  position: sticky;
+  top: 0;
+}
+
+img {
+  width: 80px;
+  border-radius: 4px;
+}
+
+.table-container {
+  max-height: 80vh;
+  overflow-y: auto;
 }
 </style>
 </head>
+
 <body>
 
-
 <h2>Data Kamar 1</h2>
-
 
 <div class="table-container">
 <table>
 <thead>
 <tr>
-<th>Foto</th>
-<th>Nama Lengkap</th>
-<th>Nomor Registrasi</th>
-<th>Tindak Pidana</th>
-<th>Tanggal Masuk</th>
-<th>Tanggal Ekspirasi</th>
+  <th>Foto</th>
+  <th>Nama Lengkap</th>
+  <th>Nomor Registrasi</th>
+  <th>Tindak Pidana</th>
+  <th>Tanggal Masuk</th>
+  <th>Tanggal Ekspirasi</th>
 </tr>
 </thead>
-<tbody id="data-body"></tbody>
+<tbody id="data"></tbody>
 </table>
 </div>
 
-
 <script>
-google.script.run.withSuccessHandler(renderTable).getDataKamar();
+const API_URL = "https://script.google.com/macros/s/AKfycbwvegqFowlxGEp4CeTT0Rr96QinlZ_vLDoN1Bm-5PCg699rgtPNWJkCSpjM-e9j-K5tFw/exec";
 
-
-function renderTable(data) {
-const tbody = document.getElementById('data-body');
-tbody.innerHTML = '';
-
-
-data.forEach(item => {
-const tr = document.createElement('tr');
-
-
-tr.innerHTML = `
-<td>${item.foto ? `<img src="${item.foto}">` : '-'}</td>
-<td>${item.nama}</td>
-<td>${item.registrasi}</td>
-<td>${item.tindakPidana}</td>
-<td>${item.tanggalMasuk}</td>
-<td>${item.tanggalEkspirasi}</td>
-`;
-
-
-tbody.appendChild(tr);
-});
-}
+fetch(API_URL)
+  .then(res => res.json())
+  .then(data => {
+    const tbody = document.getElementById("data");
+    data.forEach(d => {
+      tbody.innerHTML += `
+        <tr>
+          <td>${d.foto ? `<img src="${d.foto}">` : '-'}</td>
+          <td>${d.nama}</td>
+          <td>${d.registrasi}</td>
+          <td>${d.tindakPidana}</td>
+          <td>${d.tanggalMasuk}</td>
+          <td>${d.tanggalEkspirasi}</td>
+        </tr>
+      `;
+    });
+  })
+  .catch(err => {
+    alert("Gagal memuat data");
+    console.error(err);
+  });
 </script>
-
 
 </body>
 </html>
