@@ -2,11 +2,21 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Aplikasi</title>
+  <meta name="viewport"
+        content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+
+  <title>PSD Kamar 1</title>
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#ffffff">
+
+  <!-- iOS FULLSCREEN -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Aplikasi">
 
   <style>
-    /* Reset ringan */
     * {
       margin: 0;
       padding: 0;
@@ -16,61 +26,33 @@
     html, body {
       width: 100%;
       height: 100%;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: #f4f6f8;
-    }
-
-    /* Container utama */
-    .app-wrapper {
-      width: 100%;
-      height: 100dvh; /* optimal untuk mobile modern */
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 8px;
-    }
-
-    /* Card elegan */
-    .app-frame {
-      width: 100%;
-      height: 100%;
-      max-width: 480px; /* proporsional di HP */
-      background: #ffffff;
-      border-radius: 16px;
       overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      background: #fff;
     }
 
     iframe {
-      width: 100%;
-      height: 100%;
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100dvh;
       border: none;
     }
-
-    /* Tablet & Desktop */
-    @media (min-width: 768px) {
-      .app-frame {
-        max-width: 768px;
-      }
-    }
-
-    @media (min-width: 1200px) {
-      .app-frame {
-        max-width: 1024px;
-      }
-    }
   </style>
+
+  <script>
+    // Paksa hide address bar di Android
+    window.addEventListener("load", () => {
+      setTimeout(() => {
+        window.scrollTo(0, 1);
+      }, 0);
+    });
+  </script>
 </head>
 
 <body>
-  <div class="app-wrapper">
-    <div class="app-frame">
-      <iframe 
-        src="https://script.google.com/macros/s/AKfycbwvegqFowlxGEp4CeTT0Rr96QinlZ_vLDoN1Bm-5PCg699rgtPNWJkCSpjM-e9j-K5tFw/exec"
-        loading="lazy"
-        allowfullscreen>
-      </iframe>
-    </div>
-  </div>
+  <iframe 
+    src="https://script.google.com/macros/s/AKfycbwvegqFowlxGEp4CeTT0Rr96QinlZ_vLDoN1Bm-5PCg699rgtPNWJkCSpjM-e9j-K5tFw/exec"
+    allowfullscreen>
+  </iframe>
 </body>
 </html>
